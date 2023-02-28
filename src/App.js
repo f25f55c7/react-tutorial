@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Board from './components/Board/Board';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => {
+
+    const [turn, setTurn] = useState('X');
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    const [score, setScore] = useState({ X: 0, O: 0 });
+
+    const checkForWinner = squares => {
+        setTurn(turn === 'X' ? 'O' : 'X');
+    }
+
+    const handleClick = square => {
+        let newSquares = [...squares];
+        newSquares.splice(square, 1, turn);
+        setSquares(newSquares);
+        checkForWinner(newSquares);
+    }
+
+    return (
+    <div className="container">
+        <Board turn={turn} squares={squares} onClick={handleClick} />
     </div>
-  );
+);
 }
 
 export default App;
